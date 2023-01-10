@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="Dmitriy Morozov's personal page"
+    />
+    <link
+      rel="icon"
+      href="/favicon.ico"
+      type="image/x-icon"
+    />
+    <title>Exle</title>
+    <script>
+      // const data = {
+      //   name: 'Dmitriy Morozov',
+      //   email: {
+      //     name: '0xExle@protonmail.com',
+      //     href: 'mailto:0xExle@protonmail.com',
+      //   },
+      //   github: {
+      //     name: 'Exle',
+      //     href: 'https://github.com/Exle',
+      //   },
+      // };
+
+      // function createElementWithOptions(tagName, options) {
+      //   return Object.assign(document.createElement(tagName), options);
+      // }
+
+      function DOMContentLoaded() {
+        // const $table = document.querySelector('.table');
+        // const $data = createElementWithOptions('div', { className: 'table-data' });
+        // const $thead = createElementWithOptions('div', { className: 'thead' });
+        // const $tbody = createElementWithOptions('div', { className: 'tbody' });
+
+        // $table.append(createElementWithOptions('span', { textContent: '{' }));
+
+        // Object.entries(data).map((value) => {
+        //   const $key = createElementWithOptions('span', { textContent: `"${value[0]}":` });
+        //   $thead.append($key);
+
+        //   const $value = createElementWithOptions('span');
+        //   if (typeof value[1] === 'object') {
+        //     const $anchor = createElementWithOptions('a', { href: value[1].href, textContent: value[1].name });
+        //     $value.append('"', $anchor, '"');
+        //   } else {
+        //     $value.textContent = `"${value[1]}"`;
+        //   }
+        //   $tbody.append($value);
+        // });
+
+        // $data.append($thead);
+        // $data.append($tbody);
+
+        // $table.append($data);
+        // $table.append(createElementWithOptions('span', { textContent: '}' }));
+
+        const colors = [
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+          Math.floor(Math.random() * 255),
+        ];
+        const animateColors = [
+          `--background-animate-color-0: rgb(${colors[0]} ${colors[2]} ${colors[1]})`,
+          `--background-animate-color-2: rgb(${255 - colors[0]} ${255 - colors[2]} ${255 - colors[1]})`,
+        ];
+
+        document.documentElement.style = `${animateColors[0]}; ${animateColors[1]};`;
+      }
+
+      document.addEventListener('DOMContentLoaded', DOMContentLoaded);
+    </script>
+    <style>
+      :root {
+        --border-radius: 12px;
+        --color: 21 24 35;
+        --background-color: 239 245 249;
+        --text-color: rgb(var(--color));
+        --link-color: rgb(var(--color) / 70%);
+        --background-animate-color-0: lime;
+        --background-animate-color-1: transparent;
+        --background-animate-color-2: purple;
+        --background-animate: linear-gradient(
+          to right,
+          var(--background-animate-color-0),
+          var(--background-animate-color-1),
+          var(--background-animate-color-2)
+        );
+
+        --color-prettylights-syntax-entity-tag: #116329;
+        --color-prettylights-syntax-string: #0a3069;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --color: 239 245 249;
+          --background-color: 21 24 35;
+
+          --color-prettylights-syntax-entity-tag: #7ee787;
+          --color-prettylights-syntax-string: #a5d6ff;
+        }
+      }
+
+      :root {
+        font-family: monospace;
+        font-size: 2em;
+        line-height: 1.5;
+        word-wrap: break-word;
+        background-color: rgb(var(--background-color));
+        color: var(--text-color);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      a {
+        /* color: var(--link-color); */
+        color: currentColor;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+
+      .table {
+        display: flex;
+        flex-flow: column wrap;
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        transform: translateZ(0);
+        box-shadow: 0px 2px 8px -1px #0000001a;
+      }
+
+      .table::before,
+      .table::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+      }
+
+      .table::before {
+        background: var(--background-animate);
+        background-size: 200% 200%;
+        animation: rotate 6s linear infinite;
+        filter: blur(1vw);
+        width: 150%;
+        height: 80%;
+        left: -25%;
+        top: 10%;
+      }
+
+      .table::after {
+        inset: 0;
+        background: rgb(var(--background-color));
+        padding: 2px;
+        border-radius: var(--border-radius);
+        background-clip: content-box;
+      }
+
+      .table-data {
+        padding-left: 1rem;
+        display: flex;
+        flex-flow: column wrap;
+        column-gap: 0.5rem;
+      }
+
+      .row {
+        display: flex;
+        flex-flow: row wrap;
+        column-gap: 0.5rem;
+      }
+
+      .thead,
+      .tbody {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .thead {
+        font-weight: 500;
+      }
+
+      .entity-tag {
+        color: var(--color-prettylights-syntax-entity-tag);
+      }
+
+      .string {
+        color: var(--color-prettylights-syntax-string);
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+          background-position: 0% 100%;
+        }
+        50% {
+          transform: rotate(180deg);
+          background-position: 100% 100%;
+        }
+        100% {
+          transform: rotate(360deg);
+          background-position: 0% 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="table">
+        <span>{</span>
+          <div class="table-data">
+            <div class="row">
+              <span class="entity-tag">"name":</span>
+              <span class="string">"Dmitriy Morozov",</span>
+            </div>
+            <div class="row">
+              <span class="entity-tag">"email":</span>
+              <span class="string">"<a href="mailto:0xExle@protonmail.com">0xExle<wbr>@protonmail.com</a>",</span>
+            </div>
+            <div class="row">
+              <span class="entity-tag">"github":</span>
+              <span class="string">"<a href="https://github.com/Exle">Exle</a>"</span>
+            </div>
+          </div>
+          <span>}</span>
+      </div>
+    </main>
+  </body>
+</html>
