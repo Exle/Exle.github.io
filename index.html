@@ -3,10 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta
-      http-equiv="X-UA-Compatible"
-      content="IE=edge"
-    />
-    <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
@@ -21,61 +17,21 @@
     />
     <title>Exle</title>
     <script>
-      // const data = {
-      //   name: 'Dmitriy Morozov',
-      //   email: {
-      //     name: '0xExle@protonmail.com',
-      //     href: 'mailto:0xExle@protonmail.com',
-      //   },
-      //   github: {
-      //     name: 'Exle',
-      //     href: 'https://github.com/Exle',
-      //   },
-      // };
-
-      // function createElementWithOptions(tagName, options) {
-      //   return Object.assign(document.createElement(tagName), options);
-      // }
-
       function DOMContentLoaded() {
-        // const $table = document.querySelector('.table');
-        // const $data = createElementWithOptions('div', { className: 'table-data' });
-        // const $thead = createElementWithOptions('div', { className: 'thead' });
-        // const $tbody = createElementWithOptions('div', { className: 'tbody' });
-
-        // $table.append(createElementWithOptions('span', { textContent: '{' }));
-
-        // Object.entries(data).map((value) => {
-        //   const $key = createElementWithOptions('span', { textContent: `"${value[0]}":` });
-        //   $thead.append($key);
-
-        //   const $value = createElementWithOptions('span');
-        //   if (typeof value[1] === 'object') {
-        //     const $anchor = createElementWithOptions('a', { href: value[1].href, textContent: value[1].name });
-        //     $value.append('"', $anchor, '"');
-        //   } else {
-        //     $value.textContent = `"${value[1]}"`;
-        //   }
-        //   $tbody.append($value);
-        // });
-
-        // $data.append($thead);
-        // $data.append($tbody);
-
-        // $table.append($data);
-        // $table.append(createElementWithOptions('span', { textContent: '}' }));
-
-        const colors = [
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-          Math.floor(Math.random() * 255),
-        ];
-        const animateColors = [
-          `--background-animate-color-0: rgb(${colors[0]} ${colors[2]} ${colors[1]})`,
-          `--background-animate-color-2: rgb(${255 - colors[0]} ${255 - colors[2]} ${255 - colors[1]})`,
+        const animColors = [
+          Math.floor(Math.random() * 256),
+          Math.floor(Math.random() * 256),
+          Math.floor(Math.random() * 256),
         ];
 
-        document.documentElement.style = `${animateColors[0]}; ${animateColors[1]};`;
+        document.documentElement.style.setProperty(
+          '--table-anim-color-0',
+          `rgb(${animColors})`
+        );
+        document.documentElement.style.setProperty(
+          '--table-anim-color-2',
+          `rgb(${animColors.map(value => (255 - value))})`
+        );
       }
 
       document.addEventListener('DOMContentLoaded', DOMContentLoaded);
@@ -83,31 +39,31 @@
     <style>
       :root {
         --border-radius: 12px;
-        --color: 21 24 35;
-        --background-color: 239 245 249;
-        --text-color: rgb(var(--color));
-        --link-color: rgb(var(--color) / 70%);
-        --background-animate-color-0: lime;
-        --background-animate-color-1: transparent;
-        --background-animate-color-2: purple;
-        --background-animate: linear-gradient(
+
+        --background-color: #eff5f9;
+        --text-color: #151823;
+
+        --table-anim-color-0: lime;
+        --table-anim-color-1: transparent;
+        --table-anim-color-2: purple;
+        --table-anim: linear-gradient(
           to right,
-          var(--background-animate-color-0),
-          var(--background-animate-color-1),
-          var(--background-animate-color-2)
+          var(--table-anim-color-0),
+          var(--table-anim-color-1),
+          var(--table-anim-color-2)
         );
 
-        --color-prettylights-syntax-entity-tag: #116329;
-        --color-prettylights-syntax-string: #0a3069;
+        --row-key-color: #116329;
+        --row-value-color: #0a3069;
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
-          --color: 239 245 249;
-          --background-color: 21 24 35;
+          --background-color: #151823;
+          --text-color: #eff5f9;
 
-          --color-prettylights-syntax-entity-tag: #7ee787;
-          --color-prettylights-syntax-string: #a5d6ff;
+          --row-key-color: #7ee787;
+          --row-value-color: #a5d6ff;
         }
       }
 
@@ -115,8 +71,7 @@
         font-family: monospace;
         font-size: 2em;
         line-height: 1.5;
-        word-wrap: break-word;
-        background-color: rgb(var(--background-color));
+        background-color: var(--background-color);
         color: var(--text-color);
       }
 
@@ -137,7 +92,6 @@
       }
 
       a {
-        /* color: var(--link-color); */
         color: currentColor;
       }
 
@@ -147,7 +101,7 @@
 
       .table {
         display: flex;
-        flex-flow: column wrap;
+        flex-direction: column;
         padding: 0.5rem;
         border-radius: var(--border-radius);
         overflow: hidden;
@@ -163,53 +117,61 @@
       }
 
       .table::before {
-        background: var(--background-animate);
+        background: var(--table-anim);
         background-size: 200% 200%;
-        animation: rotate 6s linear infinite;
+        -webkit-animation: rotate 5s linear infinite;
+                animation: rotate 5s linear infinite;
         filter: blur(1vw);
         width: 150%;
         height: 80%;
-        left: -25%;
-        top: 10%;
+        left: calc((100% - 150%) / 2);
+        top: calc((100% - 80%) / 2);
       }
 
       .table::after {
         inset: 0;
-        background: rgb(var(--background-color));
         padding: 2px;
         border-radius: var(--border-radius);
+        background-color: var(--background-color);
         background-clip: content-box;
       }
 
-      .table-data {
+      .table-body {
         padding-left: 1rem;
         display: flex;
-        flex-flow: column wrap;
-        column-gap: 0.5rem;
+        flex-direction: column;
+        -moz-column-gap: 0.5rem;
+            column-gap: 0.5rem;
       }
 
-      .row {
+      .table-row {
         display: flex;
         flex-flow: row wrap;
-        column-gap: 0.5rem;
+        -moz-column-gap: 0.5rem;
+            column-gap: 0.5rem;
       }
 
-      .thead,
-      .tbody {
-        display: flex;
-        flex-direction: column;
+      .row-key {
+        color: var(--row-key-color);
       }
 
-      .thead {
-        font-weight: 500;
+      .row-value {
+        color: var(--row-value-color);
       }
 
-      .entity-tag {
-        color: var(--color-prettylights-syntax-entity-tag);
-      }
-
-      .string {
-        color: var(--color-prettylights-syntax-string);
+      @-webkit-keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+          background-position: 0% 100%;
+        }
+        50% {
+          transform: rotate(180deg);
+          background-position: 100% 100%;
+        }
+        100% {
+          transform: rotate(360deg);
+          background-position: 0% 100%;
+        }
       }
 
       @keyframes rotate {
@@ -232,18 +194,18 @@
     <main>
       <div class="table">
         <span>{</span>
-          <div class="table-data">
-            <div class="row">
-              <span class="entity-tag">"name":</span>
-              <span class="string">"Dmitriy Morozov",</span>
+          <div class="table-body">
+            <div class="table-row">
+              <span class="row-key">"name":</span>
+              <span class="row-value">"Dmitriy Morozov",</span>
             </div>
-            <div class="row">
-              <span class="entity-tag">"email":</span>
-              <span class="string">"<a href="mailto:0xExle@protonmail.com">0xExle<wbr>@protonmail.com</a>",</span>
+            <div class="table-row">
+              <span class="row-key">"email":</span>
+              <span class="row-value">"<a href="mailto:0xExle@protonmail.com">0xExle<wbr>@protonmail.com</a>",</span>
             </div>
-            <div class="row">
-              <span class="entity-tag">"github":</span>
-              <span class="string">"<a href="https://github.com/Exle">Exle</a>"</span>
+            <div class="table-row">
+              <span class="row-key">"github":</span>
+              <span class="row-value">"<a href="https://github.com/Exle">Exle</a>"</span>
             </div>
           </div>
           <span>}</span>
