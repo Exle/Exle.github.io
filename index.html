@@ -17,24 +17,56 @@
     />
     <title>Exle</title>
     <script>
-      function DOMContentLoaded() {
-        const animColors = [
-          Math.floor(Math.random() * 256),
-          Math.floor(Math.random() * 256),
-          Math.floor(Math.random() * 256),
-        ];
+      const config = {
+        background: {
+          light: {
+            min: 200,
+            max: 255,
+          },
+          dark: {
+            min: 0,
+            max: 55
+          }
+        },
+        animation: {
+          min: 0,
+          max: 255
+        }
+      };
+
+      const getRandomInt = (max, min = 0) =>
+        Math.floor(Math.random() * (max - min + 1) + min);
+
+      const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+      colorScheme.onchange = changeBackgroundColors;
+
+      function changeBackgroundColors(event) {
+        const conf = config.background[(event.matches ? 'dark' : 'light')];
+
+        const colors = {
+          background: Array.from({length: 3}, () =>
+            getRandomInt(conf.max, conf.min)
+          ),
+          animation: Array.from({length: 3}, () =>
+            getRandomInt(config.animation.max, config.animation.min)
+          )
+        };
 
         document.documentElement.style.setProperty(
+          '--background-color',
+          `rgb(${colors.background})`
+        );
+        document.documentElement.style.setProperty(
           '--table-anim-color-0',
-          `rgb(${animColors})`
+          `rgb(${colors.animation})`
         );
         document.documentElement.style.setProperty(
           '--table-anim-color-2',
-          `rgb(${animColors.map(value => (255 - value))})`
+          `rgb(${colors.animation.map(value => (255 - value))})`
         );
       }
 
-      document.addEventListener('DOMContentLoaded', DOMContentLoaded);
+      document.addEventListener('DOMContentLoaded', () => colorScheme.onchange(colorScheme));
     </script>
     <style>
       :root {
@@ -140,15 +172,26 @@
         padding-left: 1rem;
         display: flex;
         flex-direction: column;
-        -moz-column-gap: 0.5rem;
-            column-gap: 0.5rem;
+      }
+
+      .table-body::before,
+      .table-body::after {
+        margin-left: -1rem;
+      }
+
+      .table-body::before {
+        content: '{';
+      }
+
+      .table-body::after {
+        content: '}';
       }
 
       .table-row {
         display: flex;
         flex-flow: row wrap;
         -moz-column-gap: 0.5rem;
-            column-gap: 0.5rem;
+             column-gap: 0.5rem;
       }
 
       .row-key {
@@ -157,6 +200,20 @@
 
       .row-value {
         color: var(--row-value-color);
+      }
+
+      .row-key::before,
+      .row-value::before,
+      .table-row:last-child .row-value::after {
+        content: '"';
+      }
+
+      .row-key::after {
+        content: '":';
+      }
+
+      .row-value::after {
+        content: '",';
       }
 
       @-webkit-keyframes rotate {
@@ -193,22 +250,20 @@
   <body>
     <main>
       <div class="table">
-        <span>{</span>
-          <div class="table-body">
-            <div class="table-row">
-              <span class="row-key">"name":</span>
-              <span class="row-value">"Dmitriy Morozov",</span>
-            </div>
-            <div class="table-row">
-              <span class="row-key">"email":</span>
-              <span class="row-value">"<a href="mailto:0xExle@protonmail.com">0xExle<wbr>@protonmail.com</a>",</span>
-            </div>
-            <div class="table-row">
-              <span class="row-key">"github":</span>
-              <span class="row-value">"<a href="https://github.com/Exle">Exle</a>"</span>
-            </div>
+        <div class="table-body">
+          <div class="table-row">
+            <span class="row-key">name</span>
+            <span class="row-value">Dmitriy Morozov</span>
           </div>
-          <span>}</span>
+          <div class="table-row">
+            <span class="row-key">email</span>
+            <span class="row-value"><a href="mailto:0xExle@protonmail.com">0xExle<wbr>@protonmail.com</a></span>
+          </div>
+          <div class="table-row">
+            <span class="row-key">github</span>
+            <span class="row-value"><a href="https://github.com/Exle">Exle</a></span>
+          </div>
+        </div>
       </div>
     </main>
   </body>
